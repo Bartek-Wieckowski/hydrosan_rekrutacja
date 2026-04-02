@@ -34,7 +34,7 @@ export type Order = {
   bill_phone: string;
   bill_home_number: string;
   bill_flat_number: string | null;
-  email_address: string;
+  email_adress: string;
   status: string;
   total_price: number;
   payment: Payment;
