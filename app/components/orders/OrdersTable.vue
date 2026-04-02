@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Order } from "~/types";
 
-const { orders, loading, sort, statusFilter } = defineProps<{
+const { orders, loading, sort, statusSlug } = defineProps<{
   orders: Order[];
   loading: boolean;
   sort: string;
-  statusFilter: string;
+  statusSlug: string;
 }>();
 
 const emit = defineEmits<{
@@ -96,27 +96,26 @@ const applyStatus = (value: string) => {
                   v-for="opt in ORDER_STATUS_OPTIONS"
                   :key="opt.value"
                   :class="
-                    statusFilter === opt.value
+                    statusSlug === opt.slug
                       ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                       : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
                   "
                   class="w-full text-left px-2.5 py-1.5 text-xs rounded-lg transition-colors font-normal tracking-normal uppercase"
-                  @click="applyStatus(opt.value)"
+                  @click="applyStatus(opt.slug)"
                 >
                   {{ opt.label }}
                 </button>
               </div>
             </div>
           </Teleport>
-          <span
-            :class="statusFilter ? 'text-blue-500 dark:text-blue-400' : ''"
-            >{{ ORDER_COLUMNS[3].label }}</span
-          >
+          <span :class="statusSlug ? 'text-blue-500 dark:text-blue-400' : ''">{{
+            ORDER_COLUMNS[3].label
+          }}</span>
           <button
             ref="statusBtnRef"
             class="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             :class="
-              statusFilter
+              statusSlug
                 ? 'text-blue-500'
                 : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
             "
