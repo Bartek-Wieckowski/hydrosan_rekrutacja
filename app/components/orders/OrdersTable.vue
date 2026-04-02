@@ -1,15 +1,42 @@
 <script setup lang="ts">
 import type { Order } from "~/types";
 
-const { orders, loading } = defineProps<{
+const { orders, loading, sort, statusFilter } = defineProps<{
   orders: Order[];
   loading: boolean;
+  sort: string;
+  statusFilter: string;
+}>();
+
+const emit = defineEmits<{
+  sort: [value: string];
+  "filter-status": [value: string];
 }>();
 
 const expandedId = ref<number | null>(null);
+const statusMenuOpen = ref(false);
+const statusBtnRef = ref<HTMLElement | null>(null);
+const dropdownPos = ref({ top: 0, left: 0 });
 
 const toggle = (id: number) => {
   expandedId.value = expandedId.value === id ? null : id;
+};
+
+const toggleSort = () => {
+  emit("sort", sort === "asc" ? "desc" : "asc");
+};
+
+const openStatusMenu = () => {
+  if (statusBtnRef.value) {
+    const rect = statusBtnRef.value.getBoundingClientRect();
+    dropdownPos.value = { top: rect.bottom + 6, left: rect.left };
+  }
+  statusMenuOpen.value = true;
+};
+
+const applyStatus = (value: string) => {
+  statusMenuOpen.value = false;
+  emit("filter-status", value);
 };
 </script>
 
@@ -21,12 +48,83 @@ const toggle = (id: number) => {
       <!-- Headers table only desktop -->
       <div
         v-if="orders.length > 0"
-        class="hidden sm:grid grid-cols-[8rem_1fr_1fr_8.125rem_8.125rem_3.25rem] gap-4 px-4 py-2.5 text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide border-b border-gray-100 dark:border-gray-800 items-center"
+        class="hidden sm:grid grid-cols-[5rem_1fr_1fr_8.125rem_8.125rem_3.25rem] gap-4 px-4 py-2.5 text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide border-b border-gray-100 dark:border-gray-800 items-center"
       >
         <span>{{ ORDER_COLUMNS[0].label }}</span>
-        <span>{{ ORDER_COLUMNS[1].label }}</span>
+        <!-- Data with sorting -->
+        <button
+          class="flex items-center gap-1.5 uppercase tracking-wide font-medium hover:text-gray-600 dark:hover:text-gray-300 transition-colors text-left"
+          @click="toggleSort"
+        >
+          {{ ORDER_COLUMNS[1].label }}
+          <Icon
+            :name="
+              sort === 'asc' ? 'heroicons:arrow-up' : 'heroicons:arrow-down'
+            "
+            class="w-3.5 h-3.5"
+            :class="
+              sort === 'asc'
+                ? 'text-blue-500'
+                : 'text-gray-400 dark:text-gray-500'
+            "
+          />
+        </button>
         <span>{{ ORDER_COLUMNS[2].label }}</span>
-        <span>{{ ORDER_COLUMNS[3].label }}</span>
+        <!-- Status with dropdown filter -->
+        <div class="flex items-center gap-1.5">
+          <Teleport to="body">
+            <div
+              v-if="statusMenuOpen"
+              class="fixed inset-0 z-40"
+              @click="statusMenuOpen = false"
+            />
+            <div
+              v-if="statusMenuOpen"
+              class="fixed z-50 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-2 w-44"
+              :style="{
+                top: dropdownPos.top + 'px',
+                left: dropdownPos.left + 'px',
+              }"
+            >
+              <p
+                class="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide px-1 mb-1.5"
+              >
+                Status
+              </p>
+              <div class="flex flex-col gap-1.5">
+                <button
+                  v-for="opt in ORDER_STATUS_OPTIONS"
+                  :key="opt.value"
+                  :class="
+                    statusFilter === opt.value
+                      ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                  "
+                  class="w-full text-left px-2.5 py-1.5 text-xs rounded-lg transition-colors font-normal tracking-normal uppercase"
+                  @click="applyStatus(opt.value)"
+                >
+                  {{ opt.label }}
+                </button>
+              </div>
+            </div>
+          </Teleport>
+          <span
+            :class="statusFilter ? 'text-blue-500 dark:text-blue-400' : ''"
+            >{{ ORDER_COLUMNS[3].label }}</span
+          >
+          <button
+            ref="statusBtnRef"
+            class="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            :class="
+              statusFilter
+                ? 'text-blue-500'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+            "
+            @click="openStatusMenu"
+          >
+            <Icon name="heroicons:ellipsis-vertical" class="w-4 h-4 flex" />
+          </button>
+        </div>
         <span class="text-right">{{ ORDER_COLUMNS[4].label }}</span>
       </div>
 
@@ -84,7 +182,7 @@ const toggle = (id: number) => {
 
           <!-- Desktop row -->
           <div
-            class="hidden sm:grid grid-cols-[8rem_1fr_1fr_8.125rem_8.125rem_3.25rem] gap-4 px-4 py-3 items-center hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-colors cursor-pointer"
+            class="hidden sm:grid grid-cols-[5rem_1fr_1fr_8.125rem_8.125rem_3.25rem] gap-4 px-4 py-3 items-center hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-colors cursor-pointer"
             @click="toggle(order.id)"
           >
             <NuxtLink
