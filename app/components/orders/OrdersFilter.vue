@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const { sort, statusFilter } = defineProps<{
+const { sort, statusSlug } = defineProps<{
   sort: string;
-  statusFilter: string;
+  statusSlug: string;
   loading?: boolean;
 }>();
 
@@ -11,7 +11,7 @@ const emit = defineEmits<{
 
 const isOpen = ref(false);
 
-const hasActive = computed(() => !!statusFilter || sort !== "desc");
+const hasActive = computed(() => !!statusSlug || sort !== "desc");
 
 const apply = (params: Record<string, string | number>) => {
   isOpen.value = false;
@@ -86,12 +86,12 @@ const apply = (params: Record<string, string | number>) => {
             v-for="opt in ORDER_STATUS_OPTIONS"
             :key="opt.value"
             :class="
-              statusFilter === opt.value
+              statusSlug === opt.slug
                 ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                 : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
             "
             class="w-full text-left px-2.5 py-1.5 text-xs rounded-lg transition-colors uppercase"
-            @click="apply({ status: opt.value, page: 1 })"
+            @click="apply({ status: opt.slug, page: 1 })"
           >
             {{ opt.label }}
           </button>
