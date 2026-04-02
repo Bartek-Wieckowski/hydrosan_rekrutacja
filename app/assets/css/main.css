@@ -1,0 +1,7 @@
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition-property: color, background-color, border-color !important;
+  transition-duration: 350ms !important;
+  transition-timing-function: ease !important;
+}
