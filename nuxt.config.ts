@@ -10,6 +10,11 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@vueuse/motion/nuxt",
   ],
+  components: [
+    { path: "~/components/orders", pathPrefix: false },
+    { path: "~/components/common", pathPrefix: false },
+  ],
+  css: ["~/assets/css/main.css"],
   supabase: {
     redirect: false,
     url: process.env.SUPABASE_URL,
