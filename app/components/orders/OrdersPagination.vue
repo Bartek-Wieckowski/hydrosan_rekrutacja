@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onlyDigits } from "~/utils/helpers";
+
 const { page, totalPages, visiblePages } = defineProps<{
   page: number;
   totalPages: number;
@@ -7,7 +9,6 @@ const { page, totalPages, visiblePages } = defineProps<{
 
 const emit = defineEmits<{ change: [page: number] }>();
 
-const route = useRoute();
 const firstVisible = computed(() => visiblePages[0] ?? 2);
 const lastVisible = computed(
   () => visiblePages[visiblePages.length - 1] ?? totalPages - 1,
@@ -17,7 +18,7 @@ const goToPage = (input: HTMLInputElement) => {
   const p = parseInt(input.value);
   if (!p || p < 1 || p > totalPages) return;
   input.value = "";
-  navigateTo({ query: { ...route.query, page: p } });
+  emit("change", p);
 };
 </script>
 
@@ -94,14 +95,18 @@ const goToPage = (input: HTMLInputElement) => {
       <Icon name="heroicons:chevron-right" class="w-4 h-4" />
     </button>
   </div>
-  <div class="flex items-center justify-center gap-2">
+  <div
+    class="flex items-center justify-center gap-2 max-w-[18rem] w-full mx-auto"
+  >
     <input
-      type="number"
+      type="text"
+      inputmode="numeric"
       :min="1"
       :max="totalPages"
-      placeholder="Idź do..."
-      class="w-20 h-9 rounded-full text-sm text-center border border-gray-200 dark:border-gray-700 bg-transparent text-gray-600 dark:text-gray-400 focus:outline-none focus:border-teal-600"
+      placeholder="Podaj numer strony i wciśnij Enter"
+      class="h-9 pl-9 pr-3 rounded-full text-sm border border-gray-200 dark:border-gray-700 bg-transparent text-gray-600 dark:text-gray-400 focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 transition-colors placeholder:text-gray-400 dark:placeholder:text-gray-500 w-full"
       @keydown.enter="goToPage($event.target as HTMLInputElement)"
+      @keydown="onlyDigits"
     />
   </div>
 </template>
