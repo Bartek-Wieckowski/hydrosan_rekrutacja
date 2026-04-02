@@ -11,7 +11,7 @@ const goToOrder = () => {
 </script>
 
 <template>
-  <div class="relative max-w-[20rem] w-full">
+  <div class="relative md:max-w-[20rem] w-full">
     <Icon
       name="heroicons:magnifying-glass"
       class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-800 dark:text-gray-200"
