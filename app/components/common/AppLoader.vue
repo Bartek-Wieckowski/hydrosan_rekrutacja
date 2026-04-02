@@ -1,0 +1,44 @@
+<template>
+  <div class="loader text-gray-900/80 dark:text-white/80" />
+</template>
+
+<style scoped>
+.loader {
+  width: 1.25rem;
+  aspect-ratio: 0.75;
+  --c: no-repeat linear-gradient(currentColor 0 0);
+  background:
+    var(--c) 0% 50%,
+    var(--c) 50% 50%,
+    var(--c) 100% 50%;
+  background-size: 20% 50%;
+  animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+  20% {
+    background-position:
+      0% 0%,
+      50% 50%,
+      100% 50%;
+  }
+  40% {
+    background-position:
+      0% 100%,
+      50% 0%,
+      100% 50%;
+  }
+  60% {
+    background-position:
+      0% 50%,
+      50% 100%,
+      100% 0%;
+  }
+  80% {
+    background-position:
+      0% 50%,
+      50% 50%,
+      100% 100%;
+  }
+}
+</style>
