@@ -24,15 +24,6 @@ export const extractUniqueValues = (orders: Order[]) => {
   };
 };
 
-export const currencySymbol = (currency: Payment["currency"]) => {
-  switch (currency) {
-    case "PLN":
-      return "zł";
-    case "EUR":
-      return "€";
-  }
-};
-
 export const formatPrice = (
   price: number,
   currency: Payment["currency"] = "PLN",
@@ -41,6 +32,7 @@ export const formatPrice = (
     style: "currency",
     currency,
     minimumFractionDigits: 2,
+    currencyDisplay: "narrowSymbol",
   }).format(price);
 };
 
@@ -52,4 +44,10 @@ export const formatDate = (dateStr: string): string => {
     hour: "2-digit",
     minute: "2-digit",
   }).format(new Date(dateStr));
+};
+
+export const onlyDigits = (e: KeyboardEvent) => {
+  if (!/^\d$/.test(e.key) && e.key !== "Backspace" && e.key !== "Enter") {
+    e.preventDefault();
+  }
 };
