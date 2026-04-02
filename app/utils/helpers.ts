@@ -53,3 +53,9 @@ export const formatDate = (dateStr: string): string => {
     minute: "2-digit",
   }).format(new Date(dateStr));
 };
+
+export const onlyDigits = (e: KeyboardEvent) => {
+  if (!/^\d$/.test(e.key) && e.key !== "Backspace" && e.key !== "Enter") {
+    e.preventDefault();
+  }
+};
