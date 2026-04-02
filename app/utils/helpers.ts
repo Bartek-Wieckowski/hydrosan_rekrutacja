@@ -24,15 +24,6 @@ export const extractUniqueValues = (orders: Order[]) => {
   };
 };
 
-export const currencySymbol = (currency: Payment["currency"]) => {
-  switch (currency) {
-    case "PLN":
-      return "zł";
-    case "EUR":
-      return "€";
-  }
-};
-
 export const formatPrice = (
   price: number,
   currency: Payment["currency"] = "PLN",
@@ -41,6 +32,7 @@ export const formatPrice = (
     style: "currency",
     currency,
     minimumFractionDigits: 2,
+    currencyDisplay: "narrowSymbol",
   }).format(price);
 };
 
