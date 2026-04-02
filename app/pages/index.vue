@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type { Database } from "#build/types/supabase-database";
-
-const client = useSupabaseClient<Database>();
+const client = useSupabaseClient();
 </script>
 
 <template>
