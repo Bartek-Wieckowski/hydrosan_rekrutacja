@@ -34,16 +34,27 @@ const { data, pending, error } = await useAsyncData(
     }
 
     const { data, count, error } = await query;
+
     if (error) {
       console.error(error);
       throw createError({ statusCode: 500, message: error.message });
     }
-    if (!data)
-      throw createError({
-        statusCode: 500,
-        message: "Brak danych z serwera",
-      });
-    return { orders: data as Order[], total: count ?? 0 };
+
+    const raw = data as Order[];
+
+    return {
+      orders: raw.map((o) => ({
+        ...o,
+        products: o.products.map((p) => ({
+          sku: p.sku,
+          name: p.name,
+          price: p.price,
+          quantity: p.quantity,
+          image_url: p.image_url,
+        })),
+      })),
+      total: count ?? 0,
+    };
   },
   { watch: [page, sort, statusFilter] },
 );
