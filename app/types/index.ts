@@ -39,5 +39,10 @@ export type Order = {
   total_price: number;
   payment: Payment;
   shipment: Shipment;
-  products: Product[];
+  products: OrderProduct[];
 };
+
+export type OrderProduct = Pick<
+  Product,
+  "sku" | "name" | "price" | "quantity" | "image_url"
+>;
