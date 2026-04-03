@@ -47,7 +47,19 @@ export const formatDate = (dateStr: string): string => {
 };
 
 export const onlyDigits = (e: KeyboardEvent) => {
-  if (!/^\d$/.test(e.key) && e.key !== "Backspace" && e.key !== "Enter") {
+  const isDigit = /^\d$/.test(e.key);
+  const isAllowed = [
+    "Backspace",
+    "Enter",
+    "ArrowLeft",
+    "ArrowRight",
+    "Tab",
+  ].includes(e.key);
+  const isPaste = (e.ctrlKey || e.metaKey) && e.key === "v";
+  const isCopy = (e.ctrlKey || e.metaKey) && e.key === "c";
+  const isSelectAll = (e.ctrlKey || e.metaKey) && e.key === "a";
+
+  if (!isDigit && !isAllowed && !isPaste && !isCopy && !isSelectAll) {
     e.preventDefault();
   }
 };
