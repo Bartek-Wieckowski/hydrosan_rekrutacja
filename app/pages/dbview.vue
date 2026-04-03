@@ -1,4 +1,7 @@
-<script setup lang="ts">
+<template>
+  <div />
+</template>
+<!-- <script setup lang="ts">
 const client = useSupabaseClient();
 
 const { data } = await useAsyncData("debug", async () => {
@@ -45,4 +48,4 @@ const uniqueValues = data.value?.orders
       >{{ JSON.stringify(data?.orders, null, 2) }}</pre
     >
   </div>
-</template>
+</template> -->
