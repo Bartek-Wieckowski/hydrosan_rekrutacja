@@ -174,7 +174,7 @@ onUnmounted(() => window.removeEventListener("keydown", onKeydown));
           <p class="text-sm font-semibold dark:text-white">
             {{ formatPrice(product.price) }}
           </p>
-          <p class="text-xs text-gray-400 dark:text-gray-500">
+          <p class="text-md text-gray-400 dark:text-gray-500">
             × {{ product.quantity }}
           </p>
         </div>
