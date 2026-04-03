@@ -216,21 +216,22 @@ const applyStatus = (value: string) => {
             </button>
           </div>
 
-          <Transition
-            enter-active-class="transition-all duration-200 ease-out overflow-hidden"
-            enter-from-class="opacity-0 max-h-0"
-            enter-to-class="opacity-100 max-h-[40rem]"
-            leave-active-class="transition-all duration-150 ease-in overflow-hidden"
-            leave-from-class="opacity-100 max-h-[40rem]"
-            leave-to-class="opacity-0 max-h-0"
+          <div
+            class="grid transition-[grid-template-rows,opacity] duration-200 ease-out"
+            :class="
+              expandedId === order.id
+                ? 'grid-rows-[1fr] opacity-100'
+                : 'grid-rows-[0fr] opacity-0'
+            "
           >
-            <div
-              v-if="expandedId === order.id"
-              class="px-4 pt-4 pb-5 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-100 dark:border-gray-800"
-            >
-              <OrderDetailContent :order="order" />
+            <div class="overflow-hidden">
+              <div
+                class="px-4 pt-4 pb-5 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-100 dark:border-gray-800"
+              >
+                <OrderDetailContent :order="order" />
+              </div>
             </div>
-          </Transition>
+          </div>
         </template>
       </div>
     </template>
