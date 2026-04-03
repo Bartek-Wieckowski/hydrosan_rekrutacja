@@ -60,8 +60,8 @@ Spinner przy zmianie filtrów/sortowania/strony, `NuxtLoadingIndicator` przy naw
 
 ### Desktop
 
-<video src="https://developedbybart.pl/_MEDIA_FOR_SITES/videos/rekrutacja-desktop.mp4" controls></video>
+<video src="https://github.com/user-attachments/assets/839be7ca-9075-4ecd-b531-158169038bdd" controls></video>
 
 ### Mobile
 
-<video src="https://developedbybart.pl/_MEDIA_FOR_SITES/videos/rekrutacja-mobile.mp4" controls></video>
+<video src="https://github.com/user-attachments/assets/b1b7e556-371f-4466-b455-f3000d347eb2" controls></video>
